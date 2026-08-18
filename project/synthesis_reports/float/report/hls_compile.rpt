@@ -1,0 +1,206 @@
+
+
+================================================================
+== Synthesis Summary Report of 'conv2d_optimized'
+================================================================
++ General Information: 
+    * Date:           Tue Jun 30 12:42:11 2026
+    * Version:        2025.2 (Build 6295257 on Nov 14 2025)
+    * Project:        conv2d_optimized
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: artix7
+    * Target device:  xc7a25t-cpg238-1
+    
+
+* Performance & Resource Estimates: 
++------------------------------------------------+------+---------------+----------+---------+------+----------+---------+---------+------+--------+----------+------------+------------+-----+
+|                     Modules                    | Issue|               | Iteration|         | Trip |          |      Latency      |      |        |          |            |            |     |
+|                     & Loops                    | Type | Violation Type|  Latency | Interval| Count| Pipelined| (cycles)|   (ns)  | Slack|  BRAM  |    DSP   |     FF     |     LUT    | URAM|
++------------------------------------------------+------+---------------+----------+---------+------+----------+---------+---------+------+--------+----------+------------+------------+-----+
+|+ conv2d_optimized                              |     -|              -|         -|        -|     -|        no|        -|        -|  0.26|  2 (2%)|  55 (68%)|  6666 (22%)|  5614 (38%)|    -|
+| + conv2d_optimized_Pipeline_LOAD_KERNEL        |     -|              -|         -|        -|     -|       yes|       11|  110.000|  4.50|       -|         -|    299 (1%)|    64 (~0%)|    -|
+|  o LOAD_KERNEL                                 |     -|              -|         2|        1|     9|       yes|        9|   90.000|  9.50|       -|         -|           -|           -|    -|
+| + conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP  |     -|              -|         -|        -|     -|       yes|        -|        -|  0.26|  2 (2%)|  51 (63%)|  5808 (19%)|  4966 (34%)|    -|
+|  o ROW_LOOP_COL_LOOP                           |     -|              -|        55|        1|     -|       yes|        -|        -|  9.50|       -|         -|           -|           -|    -|
++------------------------------------------------+------+---------------+----------+---------+------+----------+---------+---------+------+--------+----------+------------+------------+-----+
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* S_AXILITE Interfaces
++---------------+------------+---------------+--------+----------+
+| Interface     | Data Width | Address Width | Offset | Register |
++---------------+------------+---------------+--------+----------+
+| s_axi_control | 32         | 7             | 16     | 0        |
++---------------+------------+---------------+--------+----------+
+
+* S_AXILITE Registers
++---------------+----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| Interface     | Register | Offset | Width | Access | Description                      | Bit Fields                                                           |
++---------------+----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| s_axi_control | CTRL     | 0x00   | 32    | RW     | Control signals                  | 0=AP_START 1=AP_DONE 2=AP_IDLE 3=AP_READY 7=AUTO_RESTART 9=INTERRUPT |
+| s_axi_control | GIER     | 0x04   | 32    | RW     | Global Interrupt Enable Register | 0=Enable                                                             |
+| s_axi_control | IP_IER   | 0x08   | 32    | RW     | IP Interrupt Enable Register     | 0=CHAN0_INT_EN 1=CHAN1_INT_EN                                        |
+| s_axi_control | IP_ISR   | 0x0c   | 32    | RW     | IP Interrupt Status Register     | 0=CHAN0_INT_ST 1=CHAN1_INT_ST                                        |
+| s_axi_control | rows     | 0x10   | 32    | W      | Data signal of rows              |                                                                      |
+| s_axi_control | cols     | 0x18   | 32    | W      | Data signal of cols              |                                                                      |
++---------------+----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+
+* AXIS
++------------+-----------+---------------+-------+-------+-----+-------+-------+--------+-------+-------+--------+
+| Interface  | Direction | Register Mode | TDATA | TDEST | TID | TKEEP | TLAST | TREADY | TSTRB | TUSER | TVALID |
++------------+-----------+---------------+-------+-------+-----+-------+-------+--------+-------+-------+--------+
+| in_stream  | in        | both          | 32    | 1     | 1   | 4     | 1     | 1      | 4     | 1     | 1      |
+| out_stream | out       | both          | 32    | 1     | 1   | 4     | 1     | 1      | 4     | 1     | 1      |
++------------+-----------+---------------+-------+-------+-----+-------+-------+--------+-------+-------+--------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------+
+| Interface | Type       | Ports     |
++-----------+------------+-----------+
+| ap_clk    | clock      | ap_clk    |
+| ap_rst_n  | reset      | ap_rst_n  |
+| interrupt | interrupt  | interrupt |
+| ap_ctrl   | ap_ctrl_hs |           |
++-----------+------------+-----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++------------+-----------+-----------------------------------------------------------------------------+
+| Argument   | Direction | Datatype                                                                    |
++------------+-----------+-----------------------------------------------------------------------------+
+| in_stream  | in        | stream<hls::axis<ap_int<32>, 1UL, 1UL, 1UL, (unsigned char)'8', false>, 0>& |
+| out_stream | out       | stream<hls::axis<ap_int<32>, 1UL, 1UL, 1UL, (unsigned char)'8', false>, 0>& |
+| rows       | in        | int                                                                         |
+| cols       | in        | int                                                                         |
+| kernel     | in        | float*                                                                      |
++------------+-----------+-----------------------------------------------------------------------------+
+
+* SW-to-HW Mapping
++------------+---------------+-----------+--------------------------------+
+| Argument   | HW Interface  | HW Type   | HW Info                        |
++------------+---------------+-----------+--------------------------------+
+| in_stream  | in_stream     | interface |                                |
+| out_stream | out_stream    | interface |                                |
+| rows       | s_axi_control | register  | name=rows offset=0x10 range=32 |
+| cols       | s_axi_control | register  | name=cols offset=0x18 range=32 |
+| kernel     | s_axi_control | memory    | name=kernel offset=64 range=64 |
++------------+---------------+-----------+--------------------------------+
+
+
+================================================================
+== Bind Op Report
+================================================================
++------------------------------------------------+-----+--------+----------------+--------+----------+---------+
+| Name                                           | DSP | Pragma | Variable       | Op     | Impl     | Latency |
++------------------------------------------------+-----+--------+----------------+--------+----------+---------+
+| + conv2d_optimized                             | 55  |        |                |        |          |         |
+|   add_ln196_fu_292_p2                          |     |        | add_ln196      | add    | fabric   | 0       |
+|   add_ln197_fu_298_p2                          |     |        | add_ln197      | add    | fabric   | 0       |
+|   icmp_ln118_fu_220_p2                         |     |        | icmp_ln118     | setgt  | auto     | 0       |
+|   empty_36_fu_226_p2                           |     |        | empty_36       | setgt  | auto     | 0       |
+|   smax_fu_232_p3                               |     |        | smax           | select | auto_sel | 0       |
+|   smax3_fu_240_p3                              |     |        | smax3          | select | auto_sel | 0       |
+|   mul_31ns_31ns_62_1_1_U62                     | 4   |        | mul_ln196      | mul    | auto     | 0       |
+|  + conv2d_optimized_Pipeline_LOAD_KERNEL       | 0   |        |                |        |          |         |
+|    icmp_ln86_fu_198_p2                         |     |        | icmp_ln86      | seteq  | auto     | 0       |
+|    add_ln86_fu_204_p2                          |     |        | add_ln86       | add    | fabric   | 0       |
+|  + conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP | 51  |        |                |        |          |         |
+|    icmp_ln118_fu_436_p2                        |     |        | icmp_ln118     | setgt  | auto     | 0       |
+|    icmp_ln118_1_fu_487_p2                      |     |        | icmp_ln118_1   | setlt  | auto     | 0       |
+|    icmp_ln115_fu_492_p2                        |     |        | icmp_ln115     | seteq  | auto     | 0       |
+|    add_ln115_fu_497_p2                         |     |        | add_ln115      | add    | fabric   | 0       |
+|    select_ln115_fu_503_p3                      |     |        | select_ln115   | select | auto_sel | 0       |
+|    select_ln115_1_fu_607_p3                    |     |        | select_ln115_1 | select | auto_sel | 0       |
+|    select_ln115_2_fu_614_p3                    |     |        | select_ln115_2 | select | auto_sel | 0       |
+|    add_ln115_1_fu_621_p2                       |     |        | add_ln115_1    | add    | fabric   | 0       |
+|    select_ln115_3_fu_627_p3                    |     |        | select_ln115_3 | select | auto_sel | 0       |
+|    select_ln115_4_fu_638_p3                    |     |        | select_ln115_4 | select | auto_sel | 0       |
+|    icmp_ln168_fu_655_p2                        |     |        | icmp_ln168     | setne  | auto     | 0       |
+|    icmp_ln196_fu_661_p2                        |     |        | icmp_ln196     | seteq  | auto     | 0       |
+|    addr_cmp37_fu_524_p2                        |     |        | addr_cmp37     | seteq  | auto     | 0       |
+|    reuse_select38_fu_679_p3                    |     |        | reuse_select38 | select | auto_sel | 0       |
+|    addr_cmp_fu_533_p2                          |     |        | addr_cmp       | seteq  | auto     | 0       |
+|    reuse_select_fu_689_p3                      |     |        | reuse_select   | select | auto_sel | 0       |
+|    icmp_ln168_1_fu_559_p2                      |     |        | icmp_ln168_1   | setne  | auto     | 0       |
+|    and_ln168_fu_773_p2                         |     |        | and_ln168      | and    | auto     | 0       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U26           | 3   |        | mul            | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U12          | 2   |        | acc            | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U23           | 3   |        | mul69_s        | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U13          | 2   |        | acc_1          | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U25           | 3   |        | mul69_3        | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U15          | 2   |        | acc_2          | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U29           | 3   |        | mul69_1        | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U16          | 2   |        | acc_3          | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U27           | 3   |        | mul69_1_1      | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U17          | 2   |        | acc_4          | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U28           | 3   |        | mul69_1_2      | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U19          | 2   |        | acc_5          | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U31           | 3   |        | mul69_2        | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U20          | 2   |        | acc_6          | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U30           | 3   |        | mul69_2_1      | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U21          | 2   |        | acc_7          | fadd   | fulldsp  | 4       |
+|    fmul_32ns_32ns_32_4_max_dsp_1_U24           | 3   |        | mul69_2_2      | fmul   | maxdsp   | 3       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U22          | 2   |        | acc_8          | fadd   | fulldsp  | 4       |
+|    select_ln36_fu_781_p3                       |     |        | select_ln36    | select | auto_sel | 0       |
+|    icmp_ln197_fu_565_p2                        |     |        | icmp_ln197     | seteq  | auto     | 0       |
+|    and_ln196_fu_707_p2                         |     |        | and_ln196      | and    | auto     | 0       |
+|    add_ln118_fu_570_p2                         |     |        | add_ln118      | add    | fabric   | 0       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U11          | 2   |        | p_add2         | fadd   | fulldsp  | 4       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U14          | 2   |        | p_add1         | fadd   | fulldsp  | 4       |
+|    fadd_32ns_32ns_32_5_full_dsp_1_U18          | 2   |        | p_add          | fadd   | fulldsp  | 4       |
++------------------------------------------------+-----+--------+----------------+--------+----------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
++---------------------------------------------------------------------+-----------+-----------+------+------+--------+----------------------------------------------------------------+------+---------+------------------+
+| Name                                                                | Usage     | Type      | BRAM | URAM | Pragma | Variable                                                       | Impl | Latency | Bitwidth, Depth, |
+|                                                                     |           |           |      |      |        |                                                                |      |         | Banks            |
++---------------------------------------------------------------------+-----------+-----------+------+------+--------+----------------------------------------------------------------+------+---------+------------------+
+| + conv2d_optimized                                                  |           |           | 2    | 0    |        |                                                                |      |         |                  |
+|   control_s_axi_U                                                   | interface | s_axilite |      |      |        |                                                                |      |         |                  |
+|  + conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP                      |           |           | 2    | 0    |        |                                                                |      |         |                  |
+|    conv2d_optimized_stream_stream_axis_0_int_int_float_line_buf_1_U | ram_s2p   |           | 1    |      |        | conv2d_optimized_stream_stream_axis_0_int_int_float_line_buf_1 | auto | 1       | 32, 256, 1       |
+|    conv2d_optimized_stream_stream_axis_0_int_int_float_line_buf_U   | ram_s2p   |           | 1    |      |        | conv2d_optimized_stream_stream_axis_0_int_int_float_line_buf   | auto | 1       | 32, 256, 1       |
++---------------------------------------------------------------------+-----------+-----------+------+------+--------+----------------------------------------------------------------+------+---------+------------------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Inferred Pragmas
++--------------+---------+-----------------------------------------------------------------------------------------+----------------------------------+
+| Type         | Options | Location                                                                                | Inferred From                    |
++--------------+---------+-----------------------------------------------------------------------------------------+----------------------------------+
+| LOOP_FLATTEN |         | loop ROW_LOOP (../2DCONVstream.cpp:115:5) in conv2d_optimized (../2DCONVstream.cpp:115) | pipeline ../2DCONVstream.cpp:120 |
++--------------+---------+-----------------------------------------------------------------------------------------+----------------------------------+
+
+* Valid Pragma Syntax
++-----------------+--------------------------------------+-----------------------------------------------+
+| Type            | Options                              | Location                                      |
++-----------------+--------------------------------------+-----------------------------------------------+
+| INTERFACE       | axis port=in_stream                  | in conv2d_optimized (../2DCONVstream.cpp:65)  |
+| INTERFACE       | axis port=out_stream                 | in conv2d_optimized (../2DCONVstream.cpp:66)  |
+| INTERFACE       | s_axilite port=rows                  | in conv2d_optimized (../2DCONVstream.cpp:68)  |
+| INTERFACE       | s_axilite port=cols                  | in conv2d_optimized (../2DCONVstream.cpp:69)  |
+| INTERFACE       | s_axilite port=kernel                | in conv2d_optimized (../2DCONVstream.cpp:70)  |
+| INTERFACE       | s_axilite port=return                | in conv2d_optimized (../2DCONVstream.cpp:71)  |
+| ARRAY_PARTITION | variable=local_kernel complete dim=1 | in conv2d_optimized (../2DCONVstream.cpp:79)  |
+| PIPELINE        | ii=1                                 | in conv2d_optimized (../2DCONVstream.cpp:88)  |
+| ARRAY_PARTITION | variable=line_buf complete dim=1     | in conv2d_optimized (../2DCONVstream.cpp:100) |
+| ARRAY_PARTITION | variable=window complete dim=0       | in conv2d_optimized (../2DCONVstream.cpp:108) |
+| PIPELINE        | ii=1                                 | in conv2d_optimized (../2DCONVstream.cpp:120) |
+| UNROLL          |                                      | in conv2d_optimized (../2DCONVstream.cpp:137) |
+| UNROLL          |                                      | in conv2d_optimized (../2DCONVstream.cpp:142) |
+| UNROLL          |                                      | in conv2d_optimized (../2DCONVstream.cpp:173) |
+| UNROLL          |                                      | in conv2d_optimized (../2DCONVstream.cpp:178) |
++-----------------+--------------------------------------+-----------------------------------------------+
+
+

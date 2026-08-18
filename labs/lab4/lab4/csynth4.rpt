@@ -1,0 +1,237 @@
+
+
+================================================================
+== Synthesis Summary Report of 'fir_filter_sample'
+================================================================
++ General Information: 
+    * Date:           Sat Mar 14 13:29:44 2026
+    * Version:        2025.2 (Build 6295257 on Nov 14 2025)
+    * Project:        fir_filter_sample
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: zynq
+    * Target device:  xc7z020-clg400-2
+    
+
+* Performance & Resource Estimates: 
++---------------------+------+---------------------+----------+---------+------+----------+---------+-----------+------+------+---------+-----------+-----------+-----+
+|       Modules       | Issue|                     | Iteration|         | Trip |          |       Latency       |      |      |         |           |           |     |
+|       & Loops       | Type |    Violation Type   |  Latency | Interval| Count| Pipelined| (cycles)|    (ns)   | Slack| BRAM |   DSP   |     FF    |    LUT    | URAM|
++---------------------+------+---------------------+----------+---------+------+----------+---------+-----------+------+------+---------+-----------+-----------+-----+
+|+ fir_filter_sample  |    II|  Resource Limitation|         -|       51|     -|       yes|       52|  2.600e+03|  7.34|     -|  11 (5%)|  3498 (3%)|  2131 (4%)|    -|
++---------------------+------+---------------------+----------+---------+------+----------+---------+-----------+------+------+---------+-----------+-----------+-----+
+    II Violation Information: docs.amd.com/access/sources/dita/topic?Doc_Version=2025.2%20English&url=ug1448-hls-guidance&resourceid=200-880.html
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* S_AXILITE Interfaces
++---------------+------------+---------------+
+| Interface     | Data Width | Address Width |
++---------------+------------+---------------+
+| s_axi_control | 32         | 5             |
++---------------+------------+---------------+
+
+* S_AXILITE Registers
++---------------+-----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| Interface     | Register  | Offset | Width | Access | Description                      | Bit Fields                                                           |
++---------------+-----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+| s_axi_control | CTRL      | 0x00   | 32    | RW     | Control signals                  | 0=AP_START 1=AP_DONE 2=AP_IDLE 3=AP_READY 7=AUTO_RESTART 9=INTERRUPT |
+| s_axi_control | GIER      | 0x04   | 32    | RW     | Global Interrupt Enable Register | 0=Enable                                                             |
+| s_axi_control | IP_IER    | 0x08   | 32    | RW     | IP Interrupt Enable Register     | 0=CHAN0_INT_EN 1=CHAN1_INT_EN                                        |
+| s_axi_control | IP_ISR    | 0x0c   | 32    | RW     | IP Interrupt Status Register     | 0=CHAN0_INT_ST 1=CHAN1_INT_ST                                        |
+| s_axi_control | ap_return | 0x10   | 32    | R      | Data signal of ap_return         |                                                                      |
++---------------+-----------+--------+-------+--------+----------------------------------+----------------------------------------------------------------------+
+
+* Other Ports
++------+---------+-----------+----------+
+| Port | Mode    | Direction | Bitwidth |
++------+---------+-----------+----------+
+| x_in | ap_none | in        | 32       |
++------+---------+-----------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------+
+| Interface | Type       | Ports     |
++-----------+------------+-----------+
+| ap_clk    | clock      | ap_clk    |
+| ap_rst_n  | reset      | ap_rst_n  |
+| interrupt | interrupt  | interrupt |
+| ap_ctrl   | ap_ctrl_hs |           |
++-----------+------------+-----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+----------+
+| Argument | Direction | Datatype |
++----------+-----------+----------+
+| x_in     | in        | float    |
+| return   | out       | float    |
++----------+-----------+----------+
+
+* SW-to-HW Mapping
++----------+---------------+----------+-------------------------------------+
+| Argument | HW Interface  | HW Type  | HW Info                             |
++----------+---------------+----------+-------------------------------------+
+| x_in     | x_in          | port     |                                     |
+| return   | s_axi_control | register | name=ap_return offset=0x10 range=32 |
++----------+---------------+----------+-------------------------------------+
+
+
+================================================================
+== Bind Op Report
+================================================================
++-------------------------------------+-----+--------+----------+------+---------+---------+
+| Name                                | DSP | Pragma | Variable | Op   | Impl    | Latency |
++-------------------------------------+-----+--------+----------+------+---------+---------+
+| + fir_filter_sample                 | 11  |        |          |      |         |         |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul      | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc      | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_1    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_1    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_2    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_2    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_3    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_3    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_4    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_4    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_5    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_5    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_6    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_6    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_7    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_7    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_8    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_8    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_9    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_9    | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_s    | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_10   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_10   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_11   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_11   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_12   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_12   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_13   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_13   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_14   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_14   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_15   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_15   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_16   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_16   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_17   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_17   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_18   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_18   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_19   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_19   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_20   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_20   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_21   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_21   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_22   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_22   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_23   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_23   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_24   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_24   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_25   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_25   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_26   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_26   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_27   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_27   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_28   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_28   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_29   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_29   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_30   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_30   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_31   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_31   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_32   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_32   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_33   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_33   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_34   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_34   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_35   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_35   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_36   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_36   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_37   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_37   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_38   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_38   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_39   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_39   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_40   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_40   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_41   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_41   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_42   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_42   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_43   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_43   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_44   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_44   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_45   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_45   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_46   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_46   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_47   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U3  | 3   |        | mul_47   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_48   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U4  | 3   |        | mul_48   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_49   | fadd | fulldsp | 1       |
+|   fmul_32ns_32ns_32_1_max_dsp_1_U2  | 3   |        | mul_49   | fmul | maxdsp  | 0       |
+|   fadd_32ns_32ns_32_2_full_dsp_1_U1 | 2   |        | acc_50   | fadd | fulldsp | 1       |
++-------------------------------------+-----+--------+----------+------+---------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
++---------------------+-----------+-----------+------+------+--------+----------+------+---------+------------------+
+| Name                | Usage     | Type      | BRAM | URAM | Pragma | Variable | Impl | Latency | Bitwidth, Depth, |
+|                     |           |           |      |      |        |          |      |         | Banks            |
++---------------------+-----------+-----------+------+------+--------+----------+------+---------+------------------+
+| + fir_filter_sample |           |           | 0    | 0    |        |          |      |         |                  |
+|   control_s_axi_U   | interface | s_axilite |      |      |        |          |      |         |                  |
++---------------------+-----------+-----------+------+------+--------+----------+------+---------+------------------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Pragmas with Warnings
++-----------+-----------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type      | Options               | Location                           | Messages                                                                                                                                                                                               |
++-----------+-----------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| INTERFACE | mode=axis port=return | in fir_filter_sample (../fir.c:13) | Unable to apply INTERFACE pragma options on a pass by value struct member field. Consider changing the signature of the struct to a pass by reference or as a pointer. In function 'fir_filter_sample' |
++-----------+-----------------------+------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+* Inferred Pragmas
++-----------------+----------------------------------------------------------+------------------------------------------------------------------------+---------------------+
+| Type            | Options                                                  | Location                                                               | Inferred From       |
++-----------------+----------------------------------------------------------+------------------------------------------------------------------------+---------------------+
+| ARRAY_PARTITION | dim=1 type=complete variable=fir_filter_sample.shift_reg | variable fir_filter_sample.shift_reg in fir_filter_sample (../fir.c:5) | pipeline ../fir.c:9 |
++-----------------+----------------------------------------------------------+------------------------------------------------------------------------+---------------------+
+
+* Valid Pragma Syntax
++------------+----------------------------------+------------------------------------+
+| Type       | Options                          | Location                           |
++------------+----------------------------------+------------------------------------+
+| PIPELINE   | ii=1                             | in fir_filter_sample (../fir.c:9)  |
+| ALLOCATION | operation instances=fmul limit=1 | in fir_filter_sample (../fir.c:10) |
+| ALLOCATION | operation instances=fadd limit=3 | in fir_filter_sample (../fir.c:11) |
+| INTERFACE  | mode=axis port=x_in              | in fir_filter_sample (../fir.c:12) |
+| INTERFACE  | mode=s_axilite port=return       | in fir_filter_sample (../fir.c:14) |
++------------+----------------------------------+------------------------------------+
+
+

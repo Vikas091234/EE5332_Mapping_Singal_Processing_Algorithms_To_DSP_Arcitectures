@@ -1,0 +1,300 @@
+#-----------------------------------------------------------
+# Vivado v2021.1 (64-bit)
+# SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+# IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+# Start of session at: Sun May  3 12:34:12 2026
+# Process ID: 7913
+# Current directory: /home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1
+# Command line: vivado -log design_1_conv2d_stream_0_1.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source design_1_conv2d_stream_0_1.tcl
+# Log file: /home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1/design_1_conv2d_stream_0_1.vds
+# Journal file: /home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1/vivado.jou
+#-----------------------------------------------------------
+source design_1_conv2d_stream_0_1.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/newielab1/Downloads/2D_Conv_Float_5x5/2D_Conv_Float_5x5/conv2d_stream'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+Command: synth_design -top design_1_conv2d_stream_0_1 -part xc7z020clg400-1 -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Device 21-403] Loading part xc7z020clg400-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 8302
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:15 . Memory (MB): peak = 2503.359 ; gain = 0.000 ; free physical = 182 ; free virtual = 32835
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'design_1_conv2d_stream_0_1' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ip/design_1_conv2d_stream_0_1/synth/design_1_conv2d_stream_0_1.v:58]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream.v:12]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_line_buf_0' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_line_buf_0.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_line_buf_0' (1#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_line_buf_0.v:6]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_localKernel' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_localKernel.v:10]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_flow_control_loop_pipe_sequential_init' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_flow_control_loop_pipe_sequential_init.v:8]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_flow_control_loop_pipe_sequential_init' (2#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_flow_control_loop_pipe_sequential_init.v:8]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_localKernel' (3#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_localKernel.v:10]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_linebuf_init' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_linebuf_init.v:10]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_linebuf_init' (4#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_linebuf_init.v:10]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_54_1_VITIS_LOOP_55_2' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_54_1_VITIS_LOOP_55_2.v:10]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_54_1_VITIS_LOOP_55_2' (5#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_54_1_VITIS_LOOP_55_2.v:10]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_68_3_mainLoop_cols' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_68_3_mainLoop_cols.v:10]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/ip/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip.v:60]
+INFO: [Synth 8-6157] synthesizing module 'LUT1' [/opt/Xilinx/Vivado/2021.1/scripts/rt/data/unisim_comp.v:59102]
+INFO: [Synth 8-6155] done synthesizing module 'LUT1' (6#1) [/opt/Xilinx/Vivado/2021.1/scripts/rt/data/unisim_comp.v:59102]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip' (25#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/ip/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip.v:60]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1' (26#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/ip/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip.v:60]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip' (34#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/ip/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip.v:60]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1' (35#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_mul_32s_32s_32_1_1' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_mul_32s_32s_32_1_1.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_mul_32s_32s_32_1_1' (36#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_mul_32s_32s_32_1_1.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_68_3_mainLoop_cols' (37#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_conv2d_stream_Pipeline_VITIS_LOOP_68_3_mainLoop_cols.v:10]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_CTRL_s_axi' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_CTRL_s_axi.v:6]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_CTRL_s_axi_ram' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_CTRL_s_axi.v:465]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_CTRL_s_axi_ram' (38#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_CTRL_s_axi.v:465]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_CTRL_s_axi.v:244]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_CTRL_s_axi' (39#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_CTRL_s_axi.v:6]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_mul_32ns_32ns_64_1_1' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_mul_32ns_32ns_64_1_1.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_mul_32ns_32ns_64_1_1' (40#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_mul_32ns_32ns_64_1_1.v:9]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_regslice_both' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_regslice_both.v:8]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_regslice_both' (41#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_regslice_both.v:8]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_regslice_both__parameterized0' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_regslice_both.v:8]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_regslice_both__parameterized0' (41#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_regslice_both.v:8]
+INFO: [Synth 8-6157] synthesizing module 'conv2d_stream_regslice_both__parameterized1' [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_regslice_both.v:8]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream_regslice_both__parameterized1' (41#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream_regslice_both.v:8]
+INFO: [Synth 8-6155] done synthesizing module 'conv2d_stream' (42#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ipshared/7ffb/hdl/verilog/conv2d_stream.v:12]
+INFO: [Synth 8-6155] done synthesizing module 'design_1_conv2d_stream_0_1' (43#1) [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ip/design_1_conv2d_stream_0_1/synth/design_1_conv2d_stream_0_1.v:58]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:14 ; elapsed = 00:00:37 . Memory (MB): peak = 2503.359 ; gain = 0.000 ; free physical = 3413 ; free virtual = 34171
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:17 ; elapsed = 00:00:40 . Memory (MB): peak = 2503.359 ; gain = 0.000 ; free physical = 3584 ; free virtual = 34351
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:17 ; elapsed = 00:00:40 . Memory (MB): peak = 2503.359 ; gain = 0.000 ; free physical = 3584 ; free virtual = 34351
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 2503.359 ; gain = 0.000 ; free physical = 3358 ; free virtual = 34145
+INFO: [Netlist 29-17] Analyzing 2750 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ip/design_1_conv2d_stream_0_1/constraints/conv2d_stream_ooc.xdc] for cell 'inst'
+Finished Parsing XDC File [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.gen/sources_1/bd/design_1/ip/design_1_conv2d_stream_0_1/constraints/conv2d_stream_ooc.xdc] for cell 'inst'
+Parsing XDC File [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2746.184 ; gain = 0.000 ; free physical = 3257 ; free virtual = 34069
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 75 instances were transformed.
+  FDE => FDRE: 75 instances
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.68 . Memory (MB): peak = 2763.996 ; gain = 17.812 ; free physical = 3280 ; free virtual = 34094
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:36 ; elapsed = 00:00:58 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3343 ; free virtual = 34211
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg400-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:36 ; elapsed = 00:00:58 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3343 ; free virtual = 34211
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property KEEP_HIERARCHY = SOFT for inst. (constraint file  /home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1/dont_touch.xdc, line 9).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:36 ; elapsed = 00:00:58 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3343 ; free virtual = 34211
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'wstate_reg' in module 'conv2d_stream_CTRL_s_axi'
+INFO: [Synth 8-802] inferred FSM for state register 'rstate_reg' in module 'conv2d_stream_CTRL_s_axi'
+INFO: [Synth 8-4490] FSM extraction disabled for register 'ap_CS_fsm_reg' through user attribute
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  iSTATE |                              001 |                               10
+*
+                  RDIDLE |                              010 |                               00
+                  RDDATA |                              100 |                               01
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'rstate_reg' using encoding 'one-hot' in module 'conv2d_stream_CTRL_s_axi'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  iSTATE |                             0001 |                               11
+*
+                  WRIDLE |                             0010 |                               00
+                  WRDATA |                             0100 |                               01
+                  WRRESP |                             1000 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'wstate_reg' using encoding 'one-hot' in module 'conv2d_stream_CTRL_s_axi'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:42 ; elapsed = 00:01:06 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3253 ; free virtual = 34168
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1:/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip_u/inst/i_synth/ADDSUB_OP.ADDSUB/DSP.OP/DSP48E1_BODY.ALIGN_ADD/SUB_DELAY' (delay__parameterized0) to 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1:/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip_u/inst/i_synth/ADDSUB_OP.ADDSUB/DSP.OP/DSP48E1_BODY.ALIGN_ADD/SUB_ADD_IP_DELAY'
+INFO: [Synth 8-223] decloning instance 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1:/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1:/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1:/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1:/conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1:/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1:/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_OVERFLOW'
+INFO: [Synth 8-223] decloning instance 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1:/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip_u/inst/i_synth/DELAY_DIVIDE_BY_ZERO' (delay__parameterized0) to 'conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1:/conv2d_stream_fmul_32ns_32ns_32_3_max_dsp_1_ip_u/inst/i_synth/DELAY_ACCUM_INPUT_OVERFLOW'
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:25 ; elapsed = 00:01:54 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 7798 ; free virtual = 38844
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:33 ; elapsed = 00:02:03 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 7709 ; free virtual = 38778
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:01:44 ; elapsed = 00:02:13 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 7368 ; free virtual = 38473
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-7052] The timing for the instance inst/line_buf_0_U/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance inst/line_buf_1_U/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance inst/line_buf_2_U/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance inst/line_buf_3_U/ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance inst/CTRL_s_axi_U/int_kernel/mem_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance inst/CTRL_s_axi_U/int_kernel/mem_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:02:09 ; elapsed = 00:02:41 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 4826 ; free virtual = 36011
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:02:15 ; elapsed = 00:02:47 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 4201 ; free virtual = 35395
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:02:15 ; elapsed = 00:02:47 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 4201 ; free virtual = 35395
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:18 ; elapsed = 00:02:50 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3906 ; free virtual = 35100
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:02:18 ; elapsed = 00:02:50 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3906 ; free virtual = 35100
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:02:19 ; elapsed = 00:02:51 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3954 ; free virtual = 35148
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:02:19 ; elapsed = 00:02:51 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3954 ; free virtual = 35148
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |CARRY4   |   231|
+|2     |DSP48E1  |   135|
+|10    |LUT1     |   260|
+|11    |LUT2     |  1414|
+|12    |LUT3     |  4298|
+|13    |LUT4     |  1900|
+|14    |LUT5     |  1998|
+|15    |LUT6     |  2391|
+|16    |MUXCY    |  1850|
+|17    |RAMB18E1 |     4|
+|18    |RAMB36E1 |     1|
+|19    |SRL16E   |   480|
+|20    |SRLC32E  |   525|
+|21    |XORCY    |   625|
+|22    |FDE      |    75|
+|23    |FDRE     | 12396|
+|24    |FDSE     |     1|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:02:19 ; elapsed = 00:02:51 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 3954 ; free virtual = 35148
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:02:04 ; elapsed = 00:02:37 . Memory (MB): peak = 2763.996 ; gain = 0.000 ; free physical = 4028 ; free virtual = 35222
+Synthesis Optimization Complete : Time (s): cpu = 00:02:19 ; elapsed = 00:02:51 . Memory (MB): peak = 2763.996 ; gain = 260.637 ; free physical = 4028 ; free virtual = 35222
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.50 ; elapsed = 00:00:00.50 . Memory (MB): peak = 2763.996 ; gain = 0.000 ; free physical = 4199 ; free virtual = 35393
+INFO: [Netlist 29-17] Analyzing 2921 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2803.848 ; gain = 0.000 ; free physical = 4269 ; free virtual = 35463
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 575 instances were transformed.
+  (MUXCY,XORCY) => CARRY4: 500 instances
+  FDE => FDRE: 75 instances
+
+Synth Design complete, checksum: 24ebc7a0
+INFO: [Common 17-83] Releasing license: Synthesis
+76 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:02:35 ; elapsed = 00:03:23 . Memory (MB): peak = 2803.848 ; gain = 300.488 ; free physical = 4514 ; free virtual = 35708
+INFO: [Common 17-1381] The checkpoint '/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1/design_1_conv2d_stream_0_1.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP design_1_conv2d_stream_0_1, cache-ID = e32e2b6cfd59dedb
+INFO: [Coretcl 2-1174] Renamed 2288 cell refs.
+INFO: [Common 17-1381] The checkpoint '/home/newielab1/Downloads/2D_Conv_Float_5x5/project_1_conv_5x5.runs/design_1_conv2d_stream_0_1_synth_1/design_1_conv2d_stream_0_1.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 2835.863 ; gain = 0.000 ; free physical = 2634 ; free virtual = 33734
+INFO: [runtcl-4] Executing : report_utilization -file design_1_conv2d_stream_0_1_utilization_synth.rpt -pb design_1_conv2d_stream_0_1_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Sun May  3 12:38:16 2026...

@@ -1,0 +1,12 @@
+.autopilot/
+.apc/
+*.log
+*.jou
+*.app
+*.str
+*.rpt.xml
+*.adb
+*.adb.xml
+*.aemf
+*.protoinst
+solution1/

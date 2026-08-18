@@ -1,0 +1,127 @@
+
+
+================================================================
+== Synthesis Summary Report of 'diffeq'
+================================================================
++ General Information: 
+    * Date:           Sat Mar 14 14:13:28 2026
+    * Version:        2025.2 (Build 6295257 on Nov 14 2025)
+    * Project:        diffeq
+    * Solution:       hls (Vivado IP Flow Target)
+    * Product family: zynq
+    * Target device:  xc7z020-clg400-2
+    
+
+* Performance & Resource Estimates: 
++----------+------+-------------------+----------+---------+------+----------+---------+-----+------+------+--------+-----------+-----------+-----+
+|  Modules | Issue|                   | Iteration|         | Trip |          |    Latency    |      |      |        |           |           |     |
+|  & Loops | Type |   Violation Type  |  Latency | Interval| Count| Pipelined| (cycles)| (ns)| Slack| BRAM |   DSP  |     FF    |    LUT    | URAM|
++----------+------+-------------------+----------+---------+------+----------+---------+-----+------+------+--------+-----------+-----------+-----+
+|+ diffeq  |     -|                  -|         -|        0|     -|    rewind|        -|    -|  1.80|     -|  5 (2%)|  137 (~0%)|  217 (~0%)|    -|
+| o l1     |    II|  Memory Dependency|         5|        4|     -|       yes|        -|    -|  9.50|     -|       -|          -|          -|    -|
++----------+------+-------------------+----------+---------+------+----------+---------+-----+------+------+--------+-----------+-----------+-----+
+    II Violation Information: docs.amd.com/access/sources/dita/topic?Doc_Version=2025.2%20English&url=ug1448-hls-guidance&resourceid=200-880.html
+    Name Prefix: '+' for module, 'o' for loop, '*' for dataflow
+
+
+================================================================
+== HW Interfaces
+================================================================
+* Other Ports
++-----------+---------+-----------+----------+
+| Port      | Mode    | Direction | Bitwidth |
++-----------+---------+-----------+----------+
+| C1        | ap_none | in        | 16       |
+| C2        | ap_none | in        | 16       |
+| U0        | ap_none | in        | 16       |
+| X0        | ap_none | in        | 16       |
+| Y0        | ap_none | in        | 16       |
+| a         | ap_none | in        | 16       |
+| ap_return |         | out       | 16       |
+| dx        | ap_none | in        | 16       |
++-----------+---------+-----------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst    | reset      | ap_rst                            |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+----------+
+| Argument | Direction | Datatype |
++----------+-----------+----------+
+| a        | in        | short    |
+| dx       | in        | short    |
+| X0       | in        | short    |
+| Y0       | in        | short    |
+| U0       | in        | short    |
+| C1       | in        | short    |
+| C2       | in        | short    |
+| return   | out       | short    |
++----------+-----------+----------+
+
+* SW-to-HW Mapping
++----------+--------------+---------+
+| Argument | HW Interface | HW Type |
++----------+--------------+---------+
+| a        | a            | port    |
+| dx       | dx           | port    |
+| X0       | X0           | port    |
+| Y0       | Y0           | port    |
+| U0       | U0           | port    |
+| C1       | C1           | port    |
+| C2       | C2           | port    |
+| return   | ap_return    | port    |
++----------+--------------+---------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+
+================================================================
+== Bind Op Report
+================================================================
++------------------------------------+-----+--------+---------------+-------+-----------+---------+
+| Name                               | DSP | Pragma | Variable      | Op    | Impl      | Latency |
++------------------------------------+-----+--------+---------------+-------+-----------+---------+
+| + diffeq                           | 5   |        |               |       |           |         |
+|   x1_fu_133_p2                     |     |        | x1            | add   | fabric    | 0       |
+|   mul_16s_16s_16_1_1_U1            | 1   |        | mul_ln24      | mul   | auto      | 0       |
+|   mul_16s_16s_16_1_1_U3            | 1   |        | tmp           | mul   | auto      | 0       |
+|   mac_mulsub_16s_16s_16s_16_4_1_U5 | 1   |        | thr_mul14_neg | mul   | dsp_slice | 3       |
+|   mul_16s_16s_16_1_1_U2            | 1   |        | tmp1          | mul   | auto      | 0       |
+|   mac_mulsub_16s_16s_16s_16_4_1_U4 | 1   |        | mul14_neg     | mul   | dsp_slice | 3       |
+|   mac_mulsub_16s_16s_16s_16_4_1_U4 | 1   |        | tmp_neg       | sub   | dsp_slice | 3       |
+|   mac_mulsub_16s_16s_16s_16_4_1_U5 | 1   |        | u1            | sub   | dsp_slice | 3       |
+|   y1_fu_166_p2                     |     |        | y1            | add   | fabric    | 0       |
+|   icmp_ln19_fu_151_p2              |     |        | icmp_ln19     | setlt | auto      | 0       |
++------------------------------------+-----+--------+---------------+-------+-----------+---------+
+
+
+================================================================
+== Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Inferred Pragmas
++----------+---------+-----------------------------------------------------------+-------------------------------+
+| Type     | Options | Location                                                  | Inferred From                 |
++----------+---------+-----------------------------------------------------------+-------------------------------+
+| PIPELINE |         | loop l1 (../diffeq.cpp:19:6) in diffeq (../diffeq.cpp:19) | syn.compile.pipeline_loops=64 |
++----------+---------+-----------------------------------------------------------+-------------------------------+
+
+

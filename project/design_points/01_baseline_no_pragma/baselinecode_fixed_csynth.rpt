@@ -1,0 +1,107 @@
+
+
+================================================================
+== Synthesis Summary Report of 'conv2d_baseline'
+================================================================
++ General Information: 
+    * Date:           Sat May  9 15:01:38 2026
+    * Version:        2021.1 (Build 3247384 on Thu Jun 10 19:36:07 MDT 2021)
+    * Project:        pj1
+    * Solution:       solution1 (Vivado IP Flow Target)
+    * Product family: zynq
+    * Target device:  xc7z020-clg400-2
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +------------------------------------------------------------------------+------+------+---------+-----------+----------+---------+-------+----------+------+---------+-----------+-----------+-----+
+    |                                 Modules                                | Issue|      | Latency |  Latency  | Iteration|         |  Trip |          |      |         |           |           |     |
+    |                                 & Loops                                | Type | Slack| (cycles)|    (ns)   |  Latency | Interval| Count | Pipelined| BRAM |   DSP   |     FF    |    LUT    | URAM|
+    +------------------------------------------------------------------------+------+------+---------+-----------+----------+---------+-------+----------+------+---------+-----------+-----------+-----+
+    |+ conv2d_baseline                                                       |     -|  0.85|    98318|  9.832e+05|         -|    98319|      -|        no|     -|  12 (5%)|  999 (~0%)|  1061 (1%)|    -|
+    | + grp_conv2d_baseline_Pipeline_VITIS_LOOP_29_1_VITIS_LOOP_32_2_fu_152  |     -|  0.85|    98312|  9.831e+05|         -|    98312|      -|        no|     -|   9 (4%)|  783 (~0%)|   961 (1%)|    -|
+    |  o VITIS_LOOP_29_1_VITIS_LOOP_32_2                                     |     -|  9.75|    98310|  9.831e+05|        13|        6|  16384|       yes|     -|        -|          -|          -|    -|
+    +------------------------------------------------------------------------+------+------+---------+-----------+----------+---------+-------+----------+------+---------+-----------+-----------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AP_MEMORY
++-------------------+----------+
+| Interface         | Bitwidth |
++-------------------+----------+
+| input_r_address0  | 14       |
+| input_r_address1  | 14       |
+| input_r_q0        | 16       |
+| input_r_q1        | 16       |
+| kernel_address0   | 4        |
+| kernel_address1   | 4        |
+| kernel_q0         | 16       |
+| kernel_q1         | 16       |
+| output_r_address0 | 14       |
+| output_r_d0       | 16       |
++-------------------+----------+
+
+* REGISTER
++-----------+---------+----------+
+| Interface | Mode    | Bitwidth |
++-----------+---------+----------+
+| cols      | ap_none | 32       |
+| rows      | ap_none | 32       |
++-----------+---------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst    | reset      | ap_rst                            |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+--------------------------------------+
+| Argument | Direction | Datatype                             |
++----------+-----------+--------------------------------------+
+| input    | in        | ap_fixed<16, 8, AP_TRN, AP_WRAP, 0>* |
+| output   | out       | ap_fixed<16, 8, AP_TRN, AP_WRAP, 0>* |
+| kernel   | in        | ap_fixed<16, 8, AP_TRN, AP_WRAP, 0>* |
+| rows     | in        | int                                  |
+| cols     | in        | int                                  |
++----------+-----------+--------------------------------------+
+
+* SW-to-HW Mapping
++----------+-------------------+---------+----------+
+| Argument | HW Name           | HW Type | HW Usage |
++----------+-------------------+---------+----------+
+| input    | input_r_address0  | port    | offset   |
+| input    | input_r_ce0       | port    |          |
+| input    | input_r_q0        | port    |          |
+| input    | input_r_address1  | port    | offset   |
+| input    | input_r_ce1       | port    |          |
+| input    | input_r_q1        | port    |          |
+| output   | output_r_address0 | port    | offset   |
+| output   | output_r_ce0      | port    |          |
+| output   | output_r_we0      | port    |          |
+| output   | output_r_d0       | port    |          |
+| kernel   | kernel_address0   | port    | offset   |
+| kernel   | kernel_ce0        | port    |          |
+| kernel   | kernel_q0         | port    |          |
+| kernel   | kernel_address1   | port    | offset   |
+| kernel   | kernel_ce1        | port    |          |
+| kernel   | kernel_q1         | port    |          |
+| rows     | rows              | port    |          |
+| cols     | cols              | port    |          |
++----------+-------------------+---------+----------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+

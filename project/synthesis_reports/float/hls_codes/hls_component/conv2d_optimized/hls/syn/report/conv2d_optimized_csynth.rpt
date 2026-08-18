@@ -1,0 +1,199 @@
+
+
+================================================================
+== Vitis HLS Report for 'conv2d_optimized'
+================================================================
+* Date:           Tue Jun 30 12:42:11 2026
+
+* Version:        2025.2 (Build 6295257 on Nov 14 2025)
+* Project:        conv2d_optimized
+* Solution:       hls (Vivado IP Flow Target)
+* Product family: artix7
+* Target device:  xc7a25t-cpg238-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  9.241 ns|     0.50 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------------------------------------------+---------------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+        |                                                        |                                             |  Latency (cycles) |  Latency (absolute) |  Interval |      Pipeline     |
+        |                        Instance                        |                    Module                   |   min   |   max   |    min   |    max   | min | max |        Type       |
+        +--------------------------------------------------------+---------------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+        |grp_conv2d_optimized_Pipeline_LOAD_KERNEL_fu_144        |conv2d_optimized_Pipeline_LOAD_KERNEL        |       11|       11|  0.110 us|  0.110 us|    0|    0|  loop pipeline stp|
+        |grp_conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP_fu_159  |conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP  |        ?|        ?|         ?|         ?|    0|    0|  loop pipeline stp|
+        +--------------------------------------------------------+---------------------------------------------+---------+---------+----------+----------+-----+-----+-------------------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+----+-------+-------+-----+
+|       Name      | BRAM_18K| DSP|   FF  |  LUT  | URAM|
++-----------------+---------+----+-------+-------+-----+
+|DSP              |        -|   -|      -|      -|    -|
+|Expression       |        -|   -|      0|    220|    -|
+|FIFO             |        -|   -|      -|      -|    -|
+|Instance         |        2|  55|   6363|   5295|    0|
+|Memory           |        -|   -|      -|      -|    -|
+|Multiplexer      |        -|   -|      0|     97|    -|
+|Register         |        -|   -|    303|      -|    -|
++-----------------+---------+----+-------+-------+-----+
+|Total            |        2|  55|   6666|   5612|    0|
++-----------------+---------+----+-------+-------+-----+
+|Available        |       90|  80|  29200|  14600|    0|
++-----------------+---------+----+-------+-------+-----+
+|Utilization (%)  |        2|  68|     22|     38|    0|
++-----------------+---------+----+-------+-------+-----+
+
++ Detail: 
+    * Instance: 
+    +--------------------------------------------------------+---------------------------------------------+---------+----+------+------+-----+
+    |                        Instance                        |                    Module                   | BRAM_18K| DSP|  FF  |  LUT | URAM|
+    +--------------------------------------------------------+---------------------------------------------+---------+----+------+------+-----+
+    |control_s_axi_U                                         |control_s_axi                                |        0|   0|   256|   243|    0|
+    |grp_conv2d_optimized_Pipeline_LOAD_KERNEL_fu_144        |conv2d_optimized_Pipeline_LOAD_KERNEL        |        0|   0|   299|    64|    0|
+    |grp_conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP_fu_159  |conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP  |        2|  51|  5808|  4964|    0|
+    |mul_31ns_31ns_62_1_1_U62                                |mul_31ns_31ns_62_1_1                         |        0|   4|     0|    24|    0|
+    +--------------------------------------------------------+---------------------------------------------+---------+----+------+------+-----+
+    |Total                                                   |                                             |        2|  55|  6363|  5295|    0|
+    +--------------------------------------------------------+---------------------------------------------+---------+----+------+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +--------------------------------------------------------------------------+----------+----+---+----+------------+------------+
+    |                               Variable Name                              | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------------------------------------------------------+----------+----+---+----+------------+------------+
+    |add_ln196_fu_292_p2                                                       |         +|   0|  0|  39|          32|           2|
+    |add_ln197_fu_298_p2                                                       |         +|   0|  0|  39|          32|           2|
+    |grp_conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP_fu_159_out_stream_TREADY  |       and|   0|  0|   2|           1|           1|
+    |empty_36_fu_226_p2                                                        |      icmp|   0|  0|  39|          32|           1|
+    |icmp_ln118_fu_220_p2                                                      |      icmp|   0|  0|  39|          32|           1|
+    |smax3_fu_240_p3                                                           |    select|   0|  0|  31|           1|          31|
+    |smax_fu_232_p3                                                            |    select|   0|  0|  31|           1|          31|
+    +--------------------------------------------------------------------------+----------+----+---+----+------------+------------+
+    |Total                                                                     |          |   0|  0| 220|         131|          69|
+    +--------------------------------------------------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-------------------------------+----+-----------+-----+-----------+
+    |              Name             | LUT| Input Size| Bits| Total Bits|
+    +-------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                      |  25|          6|    1|          6|
+    |in_stream_TREADY_int_regslice  |   9|          2|    1|          2|
+    |out_stream_TDATA_int_regslice  |   9|          2|   32|         64|
+    |out_stream_TDEST_int_regslice  |   9|          2|    1|          2|
+    |out_stream_TID_int_regslice    |   9|          2|    1|          2|
+    |out_stream_TKEEP_int_regslice  |   9|          2|    4|          8|
+    |out_stream_TLAST_int_regslice  |   9|          2|    1|          2|
+    |out_stream_TSTRB_int_regslice  |   9|          2|    4|          8|
+    |out_stream_TUSER_int_regslice  |   9|          2|    1|          2|
+    +-------------------------------+----+-----------+-----+-----------+
+    |Total                          |  97|         22|   46|         96|
+    +-------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------------------------------------------------------------+----+----+-----+-----------+
+    |                                 Name                                | FF | LUT| Bits| Const Bits|
+    +---------------------------------------------------------------------+----+----+-----+-----------+
+    |add_ln196_reg_411                                                    |  32|   0|   32|          0|
+    |add_ln197_reg_416                                                    |  32|   0|   32|          0|
+    |ap_CS_fsm                                                            |   5|   0|    5|          0|
+    |cols_read_reg_304                                                    |  32|   0|   32|          0|
+    |grp_conv2d_optimized_Pipeline_LOAD_KERNEL_fu_144_ap_start_reg        |   1|   0|    1|          0|
+    |grp_conv2d_optimized_Pipeline_ROW_LOOP_COL_LOOP_fu_159_ap_start_reg  |   1|   0|    1|          0|
+    |mul_ln196_reg_379                                                    |  62|   0|   62|          0|
+    |out_stream_TDATA_reg                                                 |  32|   0|   32|          0|
+    |out_stream_TDEST_reg                                                 |   1|   0|    1|          0|
+    |out_stream_TID_reg                                                   |   1|   0|    1|          0|
+    |out_stream_TKEEP_reg                                                 |   4|   0|    4|          0|
+    |out_stream_TLAST_reg                                                 |   1|   0|    1|          0|
+    |out_stream_TSTRB_reg                                                 |   4|   0|    4|          0|
+    |out_stream_TUSER_reg                                                 |   1|   0|    1|          0|
+    |rows_read_reg_310                                                    |  32|   0|   32|          0|
+    |smax3_reg_374                                                        |  31|   0|   31|          0|
+    |smax_reg_369                                                         |  31|   0|   31|          0|
+    +---------------------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                                | 303|   0|  303|          0|
+    +---------------------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------+-----+-----+------------+---------------------+--------------+
+|       RTL Ports       | Dir | Bits|  Protocol  |    Source Object    |    C Type    |
++-----------------------+-----+-----+------------+---------------------+--------------+
+|s_axi_control_AWVALID  |   in|    1|       s_axi|              control|         array|
+|s_axi_control_AWREADY  |  out|    1|       s_axi|              control|         array|
+|s_axi_control_AWADDR   |   in|    7|       s_axi|              control|         array|
+|s_axi_control_WVALID   |   in|    1|       s_axi|              control|         array|
+|s_axi_control_WREADY   |  out|    1|       s_axi|              control|         array|
+|s_axi_control_WDATA    |   in|   32|       s_axi|              control|         array|
+|s_axi_control_WSTRB    |   in|    4|       s_axi|              control|         array|
+|s_axi_control_ARVALID  |   in|    1|       s_axi|              control|         array|
+|s_axi_control_ARREADY  |  out|    1|       s_axi|              control|         array|
+|s_axi_control_ARADDR   |   in|    7|       s_axi|              control|         array|
+|s_axi_control_RVALID   |  out|    1|       s_axi|              control|         array|
+|s_axi_control_RREADY   |   in|    1|       s_axi|              control|         array|
+|s_axi_control_RDATA    |  out|   32|       s_axi|              control|         array|
+|s_axi_control_RRESP    |  out|    2|       s_axi|              control|         array|
+|s_axi_control_BVALID   |  out|    1|       s_axi|              control|         array|
+|s_axi_control_BREADY   |   in|    1|       s_axi|              control|         array|
+|s_axi_control_BRESP    |  out|    2|       s_axi|              control|         array|
+|ap_clk                 |   in|    1|  ap_ctrl_hs|     conv2d_optimized|  return value|
+|ap_rst_n               |   in|    1|  ap_ctrl_hs|     conv2d_optimized|  return value|
+|interrupt              |  out|    1|  ap_ctrl_hs|     conv2d_optimized|  return value|
+|in_stream_TDATA        |   in|   32|        axis|   in_stream_V_data_V|       pointer|
+|in_stream_TVALID       |   in|    1|        axis|   in_stream_V_dest_V|       pointer|
+|in_stream_TREADY       |  out|    1|        axis|   in_stream_V_dest_V|       pointer|
+|in_stream_TDEST        |   in|    1|        axis|   in_stream_V_dest_V|       pointer|
+|in_stream_TKEEP        |   in|    4|        axis|   in_stream_V_keep_V|       pointer|
+|in_stream_TSTRB        |   in|    4|        axis|   in_stream_V_strb_V|       pointer|
+|in_stream_TUSER        |   in|    1|        axis|   in_stream_V_user_V|       pointer|
+|in_stream_TLAST        |   in|    1|        axis|   in_stream_V_last_V|       pointer|
+|in_stream_TID          |   in|    1|        axis|     in_stream_V_id_V|       pointer|
+|out_stream_TDATA       |  out|   32|        axis|  out_stream_V_data_V|       pointer|
+|out_stream_TVALID      |  out|    1|        axis|  out_stream_V_dest_V|       pointer|
+|out_stream_TREADY      |   in|    1|        axis|  out_stream_V_dest_V|       pointer|
+|out_stream_TDEST       |  out|    1|        axis|  out_stream_V_dest_V|       pointer|
+|out_stream_TKEEP       |  out|    4|        axis|  out_stream_V_keep_V|       pointer|
+|out_stream_TSTRB       |  out|    4|        axis|  out_stream_V_strb_V|       pointer|
+|out_stream_TUSER       |  out|    1|        axis|  out_stream_V_user_V|       pointer|
+|out_stream_TLAST       |  out|    1|        axis|  out_stream_V_last_V|       pointer|
+|out_stream_TID         |  out|    1|        axis|    out_stream_V_id_V|       pointer|
++-----------------------+-----+-----+------------+---------------------+--------------+
+

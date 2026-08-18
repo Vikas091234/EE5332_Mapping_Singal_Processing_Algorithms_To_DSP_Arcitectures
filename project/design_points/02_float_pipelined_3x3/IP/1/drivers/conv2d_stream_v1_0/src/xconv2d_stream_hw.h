@@ -1,0 +1,47 @@
+// ==============================================================
+// Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.1 (64-bit)
+// Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+// ==============================================================
+// CTRL
+// 0x00 : Control signals
+//        bit 0  - ap_start (Read/Write/COH)
+//        bit 1  - ap_done (Read/COR)
+//        bit 2  - ap_idle (Read)
+//        bit 3  - ap_ready (Read/COR)
+//        bit 7  - auto_restart (Read/Write)
+//        others - reserved
+// 0x04 : Global Interrupt Enable Register
+//        bit 0  - Global Interrupt Enable (Read/Write)
+//        others - reserved
+// 0x08 : IP Interrupt Enable Register (Read/Write)
+//        bit 0  - enable ap_done interrupt (Read/Write)
+//        bit 1  - enable ap_ready interrupt (Read/Write)
+//        others - reserved
+// 0x0c : IP Interrupt Status Register (Read/TOW)
+//        bit 0  - ap_done (COR/TOW)
+//        bit 1  - ap_ready (COR/TOW)
+//        others - reserved
+// 0x10 : Data signal of rows
+//        bit 31~0 - rows[31:0] (Read/Write)
+// 0x14 : reserved
+// 0x18 : Data signal of cols
+//        bit 31~0 - cols[31:0] (Read/Write)
+// 0x1c : reserved
+// 0x40 ~
+// 0x7f : Memory 'kernel' (9 * 32b)
+//        Word n : bit [31:0] - kernel[n]
+// (SC = Self Clear, COR = Clear on Read, TOW = Toggle on Write, COH = Clear on Handshake)
+
+#define XCONV2D_STREAM_CTRL_ADDR_AP_CTRL     0x00
+#define XCONV2D_STREAM_CTRL_ADDR_GIE         0x04
+#define XCONV2D_STREAM_CTRL_ADDR_IER         0x08
+#define XCONV2D_STREAM_CTRL_ADDR_ISR         0x0c
+#define XCONV2D_STREAM_CTRL_ADDR_ROWS_DATA   0x10
+#define XCONV2D_STREAM_CTRL_BITS_ROWS_DATA   32
+#define XCONV2D_STREAM_CTRL_ADDR_COLS_DATA   0x18
+#define XCONV2D_STREAM_CTRL_BITS_COLS_DATA   32
+#define XCONV2D_STREAM_CTRL_ADDR_KERNEL_BASE 0x40
+#define XCONV2D_STREAM_CTRL_ADDR_KERNEL_HIGH 0x7f
+#define XCONV2D_STREAM_CTRL_WIDTH_KERNEL     32
+#define XCONV2D_STREAM_CTRL_DEPTH_KERNEL     9
+

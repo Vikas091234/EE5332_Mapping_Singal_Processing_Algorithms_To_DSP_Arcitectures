@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vivadoHLSLog:LogRoot xmlns:vivadoHLSLog="www.xilinx.com/vivadoHLSLog">
+  <errorLogs>
+    <logs>
+      <synLog/>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog/>
+    </logs>
+  </errorLogs>
+  <warningLogs>
+    <logs>
+      <synLog>
+        <logs message="WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low." projectName="pj1" solutionName="solution1" date="2026-05-09T15:20:43.889+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 200-960] Cannot flatten loop 'ROW_LOOP' (2DCONVstream.cpp:128:20) in function 'conv2d_optimized' either the parent loop or sub loop is do-while loop.&#xA;Resolution: For help on HLS 200-960 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.1;t=hls+guidance;d=200-960.html" projectName="pj1" solutionName="solution1" date="2026-05-09T15:20:42.568+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 207-5301] unused parameter 'print': /home/shivam/Xilinx/Vitis_HLS/2021.1/common/technology/autopilot/ap_int_base.h:792:16" projectName="pj1" solutionName="solution1" date="2026-05-09T15:20:36.501+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 207-5528] Ignore interface attribute or pragma which is not used in top function: 2DCONVstream.cpp:71:9" projectName="pj1" solutionName="solution1" date="2026-05-09T15:20:36.495+0530" type="Warning"/>
+      </synLog>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog/>
+    </logs>
+  </warningLogs>
+</vivadoHLSLog:LogRoot>

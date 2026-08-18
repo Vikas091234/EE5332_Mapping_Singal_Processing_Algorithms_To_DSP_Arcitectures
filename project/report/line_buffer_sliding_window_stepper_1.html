@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HLS Sliding Window &amp; Line Buffer — Cycle Stepper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E1A;
+    --panel:#121A2C;
+    --panel-2:#0E1424;
+    --code-bg:#0C111F;
+    --border:#26314E;
+    --border-soft:#1C263D;
+    --ink:#EAF0FB;
+    --ink-dim:#8592B4;
+    --ink-mute:#4E5A7C;
+
+    --amber:#F2A65A;
+    --amber-bg:rgba(242,166,90,0.14);
+    --amber-line:rgba(242,166,90,0.55);
+
+    --green:#5EE6A0;
+    --green-bg:rgba(94,230,160,0.14);
+    --green-line:rgba(94,230,160,0.55);
+
+    --cyan:#52C7EA;
+    --cyan-bg:rgba(82,199,234,0.16);
+    --cyan-line:rgba(82,199,234,0.6);
+
+    --ready:#5EE6A0;
+    --notready:#6B7699;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0) 0 0/22px 22px,
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    padding:32px 20px 60px;
+  }
+
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  .page-head{
+    max-width:1180px;
+    margin:0 auto 22px;
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .page-head .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--cyan);
+    background:var(--cyan-bg);
+    border:1px solid var(--cyan-line);
+    padding:4px 9px;
+    border-radius:5px;
+  }
+  .page-head h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:22px;
+    font-weight:600;
+    margin:0;
+    color:var(--ink);
+  }
+  .page-head p{
+    width:100%;
+    margin:6px 0 0;
+    font-size:13.5px;
+    color:var(--ink-dim);
+    max-width:680px;
+  }
+
+  .wrap{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .code-col{flex:1 1 300px;min-width:280px;position:sticky;top:20px}
+  .vis-col{flex:1.35 1 380px;min-width:320px}
+
+  .panel-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+    margin:0 0 8px 2px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .panel-label .sub{
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--cyan);
+    font-weight:500;
+  }
+
+  pre.code{
+    background:var(--code-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 12px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    line-height:1.75;
+    margin:0;
+    overflow-x:auto;
+    white-space:pre;
+    box-shadow:0 0 0 1px rgba(0,0,0,0.2), 0 10px 30px -14px rgba(0,0,0,0.6);
+  }
+  .ln{
+    display:flex;
+    gap:12px;
+    padding:1px 8px;
+    border-radius:5px;
+    color:var(--ink-mute);
+    transition:background .25s ease, color .25s ease, box-shadow .25s ease;
+  }
+  .ln .num{
+    color:var(--ink-mute);
+    opacity:.55;
+    min-width:16px;
+    text-align:right;
+    user-select:none;
+    flex-shrink:0;
+  }
+  .ln.active{color:var(--ink)}
+  .ln.active[data-g="shift"]{background:var(--amber-bg);box-shadow:inset 3px 0 0 var(--amber)}
+  .ln.active[data-g="insert"]{background:var(--cyan-bg);box-shadow:inset 3px 0 0 var(--cyan)}
+  .ln.active[data-g="buffer"]{background:var(--green-bg);box-shadow:inset 3px 0 0 var(--green)}
+
+  .phase-row{
+    display:flex;
+    gap:8px;
+    margin:0 0 16px;
+  }
+  .phase-pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:6px 10px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    color:var(--ink-mute);
+    background:var(--panel-2);
+    transition:all .25s ease;
+  }
+  .phase-pill.on-shift{border-color:var(--amber-line);color:var(--amber);background:var(--amber-bg)}
+  .phase-pill.on-insert{border-color:var(--cyan-line);color:var(--cyan);background:var(--cyan-bg)}
+  .phase-pill.on-buffer{border-color:var(--green-line);color:var(--green);background:var(--green-bg)}
+
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px;font-size:12px;color:var(--ink-dim)}
+  .legend span.chip{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--panel-2);border:1px solid var(--border);
+    padding:5px 10px;border-radius:20px;
+  }
+  .sw{display:inline-block;width:9px;height:9px;border-radius:3px}
+  .sw.amber{background:var(--amber)}
+  .sw.green{background:var(--green)}
+  .sw.cyan{background:var(--cyan)}
+  .sw.pending{background:var(--panel-2);border:1px dashed var(--cyan-line)}
+  .sw.future{background:var(--panel-2);border:1px dashed var(--border-soft)}
+  .sw.retired{background:var(--panel-2);border:1px solid var(--border-soft)}
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 12px 34px -20px rgba(0,0,0,0.7);
+  }
+
+  /* --- input image stream panel --- */
+  .img-idx-row{display:flex;gap:6px;margin-bottom:4px}
+  .img-idx{width:38px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-mute)}
+  .img-block{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .img-lbl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--ink-dim);width:110px;flex-shrink:0;
+    display:flex;align-items:center;gap:6px;
+  }
+  .img-row{display:flex;gap:6px;margin-bottom:8px}
+  .img-cell{
+    width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
+    border:1px solid var(--border);flex-shrink:0;position:relative;
+    transition:all .3s cubic-bezier(.2,.8,.3,1);
+  }
+  .img-cell.role-lb0{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-line)}
+  .img-cell.role-lb1{background:var(--green-bg);color:var(--green);border-color:var(--green-line)}
+  .img-cell.role-incoming{
+    background:var(--cyan-bg);color:var(--cyan);border-color:var(--cyan-line);font-weight:700;
+    box-shadow:0 0 16px -3px var(--cyan-line);transform:translateY(-2px);
+  }
+  .img-cell.role-incoming::after{
+    content:'';position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);
+    width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;
+    border-top:8px solid var(--cyan);
+  }
+  .img-cell.role-pending{background:var(--panel-2);color:var(--ink-dim);border:1px dashed var(--cyan-line);opacity:.5}
+  .img-cell.role-future{background:var(--panel-2);color:var(--ink-mute);border:1px dashed var(--border-soft);opacity:.3}
+  .img-cell.role-retired{background:var(--panel-2);color:var(--ink-mute);border:1px solid var(--border-soft);opacity:.4;text-decoration:line-through}
+
+  .dump-note{
+    margin-top:14px;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-left:3px solid var(--cyan);
+    border-radius:8px;
+    padding:9px 12px;
+    line-height:1.5;
+  }
+  .dump-note b{color:var(--ink);font-weight:600}
+
+  .grid3{display:grid;grid-template-columns:repeat(3,58px);gap:6px;margin-bottom:10px}
+  .cell{
+    height:50px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:14px;font-weight:600;border:1px solid var(--border);
+    transition:all .3s cubic-bezier(.2,.8,.3,1);
+    position:relative;
+  }
+  .row-lb0{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-line);box-shadow:0 0 14px -6px var(--amber-line)}
+  .row-lb1{background:var(--green-bg);color:var(--green);border-color:var(--green-line);box-shadow:0 0 14px -6px var(--green-line)}
+  .row-new{background:var(--cyan-bg);color:var(--cyan);border-color:var(--cyan-line);box-shadow:0 0 14px -6px var(--cyan-line)}
+  .cell-empty{background:var(--panel-2);color:var(--ink-mute);border-style:dashed;border-color:var(--border-soft);box-shadow:none}
+
+  .buf-row{display:flex;gap:6px;margin:6px 0}
+  .buf-cell{
+    width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
+    border:1px solid var(--border);flex-shrink:0;color:var(--ink);
+    transition:all .3s cubic-bezier(.2,.8,.3,1);
+  }
+  .buf-cell.hl{outline:2px solid var(--ink);outline-offset:2px;transform:translateY(-2px)}
+  .idx-row{display:flex;gap:6px;margin-bottom:4px}
+  .idx{width:38px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-mute)}
+  .lbl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--ink-dim);width:110px;flex-shrink:0;
+    display:flex;align-items:center;gap:6px;
+  }
+  .lbl .dot{width:8px;height:8px;border-radius:3px;flex-shrink:0}
+  .buf-block{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+
+  .out{
+    margin-top:2px;font-size:13px;padding:9px 12px;border-radius:8px;
+    font-family:'JetBrains Mono',monospace;
+    border:1px solid var(--border);
+  }
+  .out.ready{color:var(--ready);background:var(--green-bg);border-color:var(--green-line)}
+  .out.notready{color:var(--notready);background:var(--panel-2);border-color:var(--border)}
+
+  .status{
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+    color:var(--ink-dim);
+    margin:16px 0 0;
+    line-height:1.55;
+  }
+  .status b{color:var(--ink);font-weight:600}
+
+  .controls{display:flex;align-items:center;gap:12px;margin-top:16px}
+  .bar{flex:1;height:6px;background:var(--panel-2);border-radius:3px;overflow:hidden;border:1px solid var(--border-soft)}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--cyan),var(--green));transition:width .25s ease}
+  .step-counter{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-mute);
+    min-width:64px;
+    text-align:center;
+  }
+
+  button.stepbtn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:40px;height:40px;border-radius:10px;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    color:var(--ink);
+    cursor:pointer;
+    transition:all .18s ease;
+    flex-shrink:0;
+  }
+  button.stepbtn:hover:not(:disabled){
+    background:var(--cyan-bg);
+    border-color:var(--cyan-line);
+    color:var(--cyan);
+    transform:translateY(-1px);
+  }
+  button.stepbtn:active:not(:disabled){transform:translateY(0)}
+  button.stepbtn:disabled{opacity:.35;cursor:not-allowed}
+  button.stepbtn svg{width:18px;height:18px}
+</style>
+</head>
+<body>
+
+<h2 class="sr-only">Step-by-step animation of the HLS sliding window and line buffer update code, one clock cycle at a time</h2>
+
+<div class="page-head">
+  <span class="eyebrow">HLS &middot; Cycle-Accurate</span>
+  <h1>Sliding Window &amp; Line Buffer Stepper</h1>
+  <p>Watch two rows of an 8-pixel-wide input image stream in, cycle by cycle — see exactly which pixel is entering the window, and why line_buf[0] can safely drop each old-row pixel the instant the window has consumed it.</p>
+</div>
+
+<div class="wrap">
+  <div class="code-col">
+    <div class="panel-label"><span>Source &mdash; window_update.cpp</span></div>
+    <pre class="code" id="codebox"></pre>
+  </div>
+
+  <div class="vis-col">
+
+    <div class="phase-row" id="phaseRow">
+      <div class="phase-pill" data-phase="shift">1&nbsp;&middot;&nbsp;Shift</div>
+      <div class="phase-pill" data-phase="insert">2&nbsp;&middot;&nbsp;Insert</div>
+      <div class="phase-pill" data-phase="buffer">3&nbsp;&middot;&nbsp;Buffer</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label"><span>Input Image &middot; 8px wide</span><span class="sub" id="imgPanelSub"></span></div>
+      <div class="legend">
+        <span class="chip"><span class="sw amber"></span>held in line_buf[0]</span>
+        <span class="chip"><span class="sw green"></span>held in line_buf[1]</span>
+        <span class="chip"><span class="sw cyan"></span>entering window now</span>
+        <span class="chip"><span class="sw pending"></span>not read yet</span>
+        <span class="chip"><span class="sw retired"></span>retired / dumped</span>
+      </div>
+      <div class="img-idx-row" id="imgIdxRow" style="margin-left:118px"></div>
+      <div id="imgRows"></div>
+      <div class="dump-note" id="dumpNote"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label"><span>3&times;3 Window</span></div>
+      <div class="legend">
+        <span class="chip"><span class="sw amber"></span>line_buf[0] &middot; row j&minus;2</span>
+        <span class="chip"><span class="sw green"></span>line_buf[1] &middot; row j&minus;1</span>
+        <span class="chip"><span class="sw cyan"></span>new pixel &middot; row j</span>
+      </div>
+      <div id="windowGrid" class="grid3"></div>
+      <div class="out" id="outLine"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label"><span>Line Buffers</span></div>
+      <div class="idx-row" id="idxRow" style="margin-left:118px"></div>
+      <div class="buf-block"><div class="lbl"><span class="dot" style="background:var(--amber)"></span>line_buf[0]</div><div class="buf-row" id="lb0Row"></div></div>
+      <div class="buf-block"><div class="lbl"><span class="dot" style="background:var(--green)"></span>line_buf[1]</div><div class="buf-row" id="lb1Row"></div></div>
+    </div>
+
+    <div class="status" id="statusBox"></div>
+
+    <div class="controls">
+      <button id="prevBtn" class="stepbtn" aria-label="Previous step">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      <div class="step-counter" id="stepCounter"></div>
+      <button id="nextBtn" class="stepbtn" aria-label="Next step">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var K=3, W=8;
+  var IMG_ROWS=4;
+
+  function buildImage(){
+    var img=[];
+    for(var r=0;r<IMG_ROWS;r++){
+      var row=[];
+      for(var c=0;c<W;c++){ row.push(r*10+c); }
+      img.push(row);
+    }
+    return img;
+  }
+  var image=buildImage();
+
+  function fmt(v){
+    if(v===null || v===undefined) return '';
+    var r=Math.floor(v/10), c=v%10;
+    return r+'\u00b7'+c;
+  }
+
+  var lb0=image[0].slice();
+  var lb1=image[1].slice();
+  var win=[[0,0,0],[0,0,0],[0,0,0]];
+  var passRows=[2,3];
+
+  function copyGrid(g){return g.map(function(r){return r.slice();});}
+
+  var frames=[];
+  passRows.forEach(function(prow){
+    var incoming=image[prow];
+    for(var j=0;j<W;j++){
+
+      for(var r=0;r<K;r++){
+        for(var c=0;c<K-1;c++){ win[r][c]=win[r][c+1]; }
+        win[r][K-1]=null;
+      }
+      frames.push({row:prow,j:j,group:'shift',win:copyGrid(win),lb0:lb0.slice(),lb1:lb1.slice(),newPixel:incoming[j]});
+
+      win[0][K-1]=lb0[j];
+      win[1][K-1]=lb1[j];
+      win[2][K-1]=incoming[j];
+      frames.push({row:prow,j:j,group:'insert',win:copyGrid(win),lb0:lb0.slice(),lb1:lb1.slice(),newPixel:incoming[j],outputReady:j>=K-1});
+
+      var prevLb0=lb0[j], prevLb1=lb1[j];
+      lb0[j]=lb1[j];
+      lb1[j]=incoming[j];
+      frames.push({
+        row:prow,j:j,group:'buffer',win:copyGrid(win),lb0:lb0.slice(),lb1:lb1.slice(),newPixel:incoming[j],
+        changedIdx:j,dumpedVal:prevLb0,takenVal:prevLb1,curRow:prow
+      });
+    }
+  });
+
+  var codeLines=[
+    {t:'SHIFT_ROWS:',g:null},
+    {t:'for(int r = 0; r < K; r++) {',g:'shift'},
+    {t:'  SHIFT_COLS:',g:'shift'},
+    {t:'  for(int c = 0; c < K-1; c++) {',g:'shift'},
+    {t:'    window[r][c] = window[r][c+1];',g:'shift'},
+    {t:'  }',g:'shift'},
+    {t:'}',g:'shift'},
+    {t:'',g:null},
+    {t:'window[0][K-1] = line_buf[0][j];',g:'insert'},
+    {t:'window[1][K-1] = line_buf[1][j];',g:'insert'},
+    {t:'window[2][K-1] = new_pixel;',g:'insert'},
+    {t:'',g:null},
+    {t:'line_buf[0][j] = line_buf[1][j];',g:'buffer'},
+    {t:'line_buf[1][j] = new_pixel;',g:'buffer'}
+  ];
+
+  var codebox=document.getElementById('codebox');
+  codebox.innerHTML=codeLines.map(function(l,i){
+    return '<span class="ln" data-g="'+(l.g||'')+'" id="ln'+i+'"><span class="num">'+(i+1)+'</span><span>'+(l.t.length?l.t:' ')+'</span></span>';
+  }).join('\n');
+
+  var idx=0;
+
+  function render(){
+    var f=frames[idx];
+
+    document.querySelectorAll('.ln').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-g')===f.group);
+    });
+
+    document.querySelectorAll('.phase-pill').forEach(function(el){
+      el.classList.toggle('on-shift', el.getAttribute('data-phase')==='shift' && f.group==='shift');
+      el.classList.toggle('on-insert', el.getAttribute('data-phase')==='insert' && f.group==='insert');
+      el.classList.toggle('on-buffer', el.getAttribute('data-phase')==='buffer' && f.group==='buffer');
+    });
+
+    // --- input image panel ---
+    document.getElementById('imgPanelSub').textContent =
+      'streaming row '+f.row+' \u2014 pass '+(passRows.indexOf(f.row)+1)+' of '+passRows.length;
+
+    var imgIdx=document.getElementById('imgIdxRow');
+    imgIdx.innerHTML='';
+    for(var ci=0;ci<W;ci++){
+      var di=document.createElement('div');
+      di.className='img-idx';
+      di.textContent=ci;
+      imgIdx.appendChild(di);
+    }
+
+    var imgRowsEl=document.getElementById('imgRows');
+    imgRowsEl.innerHTML='';
+    for(var r=0;r<IMG_ROWS;r++){
+      var block=document.createElement('div');
+      block.className='img-block';
+      var lbl=document.createElement('div');
+      lbl.className='img-lbl';
+      lbl.textContent='Row '+r;
+      block.appendChild(lbl);
+      var rowWrap=document.createElement('div');
+      rowWrap.className='img-row';
+      for(var c=0;c<W;c++){
+        var value=r*10+c;
+        var role;
+        if(value===f.lb0[c]) role='lb0';
+        else if(value===f.lb1[c]) role='lb1';
+        else if(r===f.row && c===f.j) role='incoming';
+        else if(r===f.row && c>f.j) role='pending';
+        else if(r>f.row) role='future';
+        else role='retired';
+
+        var cell=document.createElement('div');
+        cell.className='img-cell role-'+role;
+        cell.textContent = (role==='future') ? '' : fmt(value);
+        rowWrap.appendChild(cell);
+      }
+      block.appendChild(rowWrap);
+      imgRowsEl.appendChild(block);
+    }
+
+    var dumpNote=document.getElementById('dumpNote');
+    if(f.group==='buffer'){
+      dumpNote.innerHTML='<b>Column '+f.j+' just retired row '+Math.floor(f.dumpedVal/10)+':</b> the window already consumed line_buf[0]['+f.j+'] = '+fmt(f.dumpedVal)+' one cycle ago \u2014 that pixel will never be read again, so its slot is safe to overwrite. line_buf[0]['+f.j+'] now takes row '+Math.floor(f.takenVal/10)+'\u2019s pixel ('+fmt(f.takenVal)+'), and line_buf[1]['+f.j+'] takes the freshly streamed row '+f.curRow+' pixel ('+fmt(f.newPixel)+').';
+    } else {
+      dumpNote.innerHTML='<b>Why line_buf[0] gets overwritten:</b> once the window has used a line_buf[0] pixel, that row is done contributing to any future window \u2014 the buffer slot is immediately free for the next row\u2019s data.';
+    }
+
+    // --- window grid ---
+    var wg=document.getElementById('windowGrid');
+    wg.innerHTML='';
+    var rowClass=['row-lb0','row-lb1','row-new'];
+    for(var rr=0;rr<3;rr++){
+      for(var cc=0;cc<3;cc++){
+        var v=f.win[rr][cc];
+        var div=document.createElement('div');
+        if(v===null){
+          div.className='cell cell-empty';
+          div.textContent='';
+        } else {
+          div.className='cell '+rowClass[rr];
+          div.textContent=fmt(v);
+        }
+        wg.appendChild(div);
+      }
+    }
+
+    var outEl=document.getElementById('outLine');
+    if(f.group==='insert' && f.outputReady){
+      outEl.className='out ready';
+      outEl.textContent='Window full \u2014 ready to feed the 3\u00d73 convolution MACs (output column '+(f.j-K+1)+', row '+f.row+')';
+    } else if(f.group!=='insert' && f.j>=K-1){
+      outEl.className='out ready';
+      outEl.textContent='Window filled for this column \u2014 pipeline running at II = 1';
+    } else {
+      outEl.className='out notready';
+      outEl.textContent='Pipeline filling \u2014 window not yet full (need column index \u2265 '+(K-1)+')';
+    }
+
+    // --- line buffer rows ---
+    var idxRow=document.getElementById('idxRow');
+    idxRow.innerHTML='';
+    for(var i=0;i<W;i++){
+      var d=document.createElement('div');
+      d.className='idx';
+      d.textContent=i;
+      idxRow.appendChild(d);
+    }
+
+    function renderBuf(arr,elId,cssVar){
+      var el=document.getElementById(elId);
+      el.innerHTML='';
+      for(var i=0;i<W;i++){
+        var d=document.createElement('div');
+        d.className='buf-cell';
+        d.style.background='var(--'+cssVar+'-bg)';
+        d.style.borderColor='var(--'+cssVar+'-line)';
+        d.style.color='var(--'+cssVar+')';
+        if(i===f.j) d.classList.add('hl');
+        d.textContent=fmt(arr[i]);
+        el.appendChild(d);
+      }
+    }
+    renderBuf(f.lb0,'lb0Row','amber');
+    renderBuf(f.lb1,'lb1Row','green');
+
+    var status=document.getElementById('statusBox');
+    var msg='';
+    if(f.group==='shift'){
+      msg='<b>Row '+f.row+', clock j = '+f.j+' \u2014 shift left:</b> every window value moves one column left (unrolled, all in parallel). The rightmost column is now empty, waiting to be filled.';
+    } else if(f.group==='insert'){
+      msg='<b>Row '+f.row+', clock j = '+f.j+' \u2014 insert new column:</b> new_pixel = '+fmt(f.newPixel)+' arrives. window[0][2] \u2190 line_buf[0]['+f.j+'] = '+fmt(f.lb0[f.j])+', window[1][2] \u2190 line_buf[1]['+f.j+'] = '+fmt(f.lb1[f.j])+', window[2][2] \u2190 new_pixel = '+fmt(f.newPixel)+'.';
+    } else {
+      msg='<b>Row '+f.row+', clock j = '+f.j+' \u2014 update line buffers:</b> line_buf[0]['+f.j+'] takes the old line_buf[1]['+f.j+'] value ('+fmt(f.takenVal)+'), and line_buf[1]['+f.j+'] takes new_pixel ('+fmt(f.newPixel)+'). Row '+Math.floor(f.dumpedVal/10)+'\u2019s pixel at this column is now retired for good.';
+    }
+    status.innerHTML=msg;
+
+    document.getElementById('barFill').style.width=(100*(idx+1)/frames.length)+'%';
+    document.getElementById('stepCounter').textContent=(idx+1)+' / '+frames.length;
+    document.getElementById('prevBtn').disabled = idx===0;
+    document.getElementById('nextBtn').disabled = idx===frames.length-1;
+  }
+
+  document.getElementById('prevBtn').addEventListener('click',function(){ if(idx>0){idx--;render();} });
+  document.getElementById('nextBtn').addEventListener('click',function(){ if(idx<frames.length-1){idx++;render();} });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key==='ArrowLeft' && idx>0){ idx--; render(); }
+    if(e.key==='ArrowRight' && idx<frames.length-1){ idx++; render(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

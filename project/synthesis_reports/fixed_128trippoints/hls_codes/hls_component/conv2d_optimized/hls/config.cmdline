@@ -1,0 +1,3 @@
+relativeroot=C:/Users/ielab1/Desktop/vikas/hls_codes/hls_component
+original_argv=-c --mode hls --config C:\Users\ielab1\Desktop\vikas\hls_codes\hls_component\hls_config.cfg --work_dir conv2d_optimized 
+

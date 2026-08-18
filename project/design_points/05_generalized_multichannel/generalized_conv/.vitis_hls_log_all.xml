@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vivadoHLSLog:LogRoot xmlns:vivadoHLSLog="www.xilinx.com/vivadoHLSLog">
+  <errorLogs>
+    <logs>
+      <synLog/>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog/>
+    </logs>
+  </errorLogs>
+  <warningLogs>
+    <logs>
+      <synLog>
+        <logs message="WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low." projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:24.671+0530" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-65] Unable to satisfy pipeline directive for loop 'COMPUTE_OUTPUT': contains subloop(s) that are not unrolled or flattened." projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:23.974+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 200-960] Cannot flatten loop 'COL_LOOP' (2DCONVstream.cpp:82:18) in function 'conv2d_stream' more than one sub loop.&#xA;Resolution: For help on HLS 200-960 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.1;t=hls+guidance;d=200-960.html" projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:23.969+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 200-960] Cannot flatten loop 'COMPUTE_OUTPUT' (2DCONVstream.cpp:127:22) in function 'conv2d_stream' the outer loop is not a perfect loop because there is nontrivial logic before entering the inner loop.&#xA;Resolution: For help on HLS 200-960 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.1;t=hls+guidance;d=200-960.html" projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:23.966+0530" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-561] Updating loop upper bound from -1 to 15 for loop 'UPDATE_WINDOW' in function 'conv2d_stream'." projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:23.963+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 200-936] Cannot unroll loop 'VITIS_LOOP_132_5' (2DCONVstream.cpp:130) in function 'conv2d_stream': cannot completely unroll a loop with a variable trip count.&#xA;Resolution: For help on HLS 200-936 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.1;t=hls+guidance;d=200-936.html" projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:23.958+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 200-936] Cannot unroll loop 'UPDATE_WINDOW' (2DCONVstream.cpp:109) in function 'conv2d_stream': cannot completely unroll a loop with a variable trip count.&#xA;Resolution: For help on HLS 200-936 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.1;t=hls+guidance;d=200-936.html" projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:23.952+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 200-936] Cannot unroll loop 'READ_CHANNELS' (2DCONVstream.cpp:91) in function 'conv2d_stream': cannot completely unroll a loop with a variable trip count.&#xA;Resolution: For help on HLS 200-936 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.1;t=hls+guidance;d=200-936.html" projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:23.944+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 207-5301] unused parameter 'print': /opt/Xilinx/Vitis_HLS/2021.1/common/technology/autopilot/ap_int_base.h:792:16" projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:16.782+0530" type="Warning"/>
+        <logs message="WARNING: [HLS 207-5528] Ignore interface attribute or pragma which is not used in top function: 2DCONVstream.cpp:35:9" projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:45:16.743+0530" type="Warning"/>
+      </synLog>
+      <simLog/>
+      <mgLog/>
+      <packageLog>
+        <logs message="WARNING: [IP_Flow 19-4832] The IP name 'conv2d_stream_fmul_32ns_32ns_32_4_max_dsp_1_ip' you have specified is long. The Windows operating system has path length limitations. It is recommended you use shorter names to reduce the likelihood of issues." projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:46:51.821+0530" type="Warning"/>
+        <logs message="WARNING: [IP_Flow 19-4832] The IP name 'conv2d_stream_fadd_32ns_32ns_32_5_full_dsp_1_ip' you have specified is long. The Windows operating system has path length limitations. It is recommended you use shorter names to reduce the likelihood of issues." projectName="generalized_conv" solutionName="solution1" date="2026-05-03T13:46:49.309+0530" type="Warning"/>
+      </packageLog>
+      <csimLog/>
+    </logs>
+  </warningLogs>
+</vivadoHLSLog:LogRoot>

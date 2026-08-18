@@ -1,0 +1,15 @@
+[
+  {
+    "directory": "C:\\Users\\ielab1\\Desktop\\vikas\\hls_codes\\hls_component",
+    "arguments": [
+      "C:\\AMDDesignTools\\2025.2\\Vitis\\win64\\tools\\vcxx\\libexec\\clang++.exe",
+      "--sysroot=C:\\AMDDesignTools\\2025.2\\Vitis\\tps\\mingw\\10.0.0\\win64.o\\nt",
+      "-fhls",
+      "-hls-syn-headers-dir=C:\\AMDDesignTools\\2025.2\\Vitis\\common\\technology\\autopilot",
+      "-fhlstoplevel=conv2d_optimized",
+      "-c",
+      "C:\\Users\\ielab1\\Desktop\\vikas\\hls_codes\\2DCONVstream.cpp"
+    ],
+    "file": "C:\\Users\\ielab1\\Desktop\\vikas\\hls_codes\\2DCONVstream.cpp"
+  }
+]
